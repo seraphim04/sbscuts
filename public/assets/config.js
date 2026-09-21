@@ -86,8 +86,15 @@ window.SITE = {
   },
 
   // ---- Barber-website upsell (footer link only, kept quiet) -----------
+  // Priced lower than sergotstock's $599/$299.99 split since this build is
+  // simpler in scope (no cart, no inventory locking, no admin panel to
+  // build — just the same static-page system with a config file to edit).
+  // These are DISPLAY-ONLY strings; the actual charged amount lives in
+  // functions/api/website-deposit.js (DEPOSIT_CENTS) — keep both in sync
+  // if you ever change the price.
   websiteOffer: {
-    price: "[Confirm flat price you want to charge, e.g. $599]",
-    applicationsGoTo: "[Confirm where applications should land — this business's email, or a separate intake you want set up]"
+    totalPrice: "$399",
+    depositPrice: "$199.99",
+    remainingPrice: "$199.01"
   }
 };

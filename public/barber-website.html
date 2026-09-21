@@ -13,8 +13,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+<style>
+  .status-banner{background:#2A1F0E;border-bottom:1px solid rgba(172,138,78,0.5);color:#F0DFC4;font-size:13px;text-align:center;padding:10px 12px;}
+</style>
 </head>
 <body>
+
+<div id="statusBanner"></div>
 
 <header class="site-nav">
   <div class="nav-row">
@@ -29,7 +34,7 @@
     <h1>Want a site like this one?</h1>
     <p class="lead">I'll build it for you — real design, a real menu, a Book Now button that actually works, all set up around your shop, your prices, your photos.</p>
     <div class="hero-ctas">
-      <a href="#apply" class="btn btn-accent">Apply — <span class="ph" title="Placeholder — confirm flat price">$599</span> Flat</a>
+      <button class="btn btn-accent" id="ctaTop">Reserve Your Build — <span id="depositPriceTop">$199.99</span></button>
       <a href="/" class="btn btn-outline-light" target="_blank" rel="noopener">See It Live First</a>
     </div>
   </div>
@@ -46,7 +51,7 @@
 
 <section class="section container" style="padding-top:0;">
   <h2>What's included</h2>
-  <div class="feature-grid grid-2" style="margin-top:28px;">
+  <div class="grid-2" style="margin-top:28px;">
     <div class="card">
       <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Full site, not a link page</h3>
       <p class="lead" style="font-size:14px;margin:0;">Home, Services, Gallery, About, Reviews, Contact — a real multi-page site, not a single link-in-bio page.</p>
@@ -66,102 +71,89 @@
   </div>
 </section>
 
-<section class="pricing" style="background:var(--ink);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+<section class="pricing" style="background:var(--ink);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:56px 0;">
   <div class="container">
     <div class="card" style="max-width:460px;margin:0 auto;text-align:center;padding:36px 32px;">
-      <div style="font-family:'Playfair Display';font-weight:800;font-size:48px;margin-bottom:6px;">
-        <span class="ph" title="Placeholder — confirm flat price you want to charge">$599</span>
-      </div>
-      <p class="lead" style="font-size:14px;margin-bottom:22px;">One flat price, built around your shop.</p>
-      <a href="#apply" class="btn btn-accent" style="width:100%;">Apply Now</a>
+      <div style="font-family:'Playfair Display';font-weight:800;font-size:48px;margin-bottom:6px;" id="totalPrice">$399</div>
+      <div style="color:var(--text-dim);font-size:14px;line-height:1.6;margin-bottom:22px;">One flat price. No monthly platform fees on top — you own your hosting, your data, everything.</div>
+      <div style="color:var(--accent-hi);font-size:13px;font-weight:700;margin-bottom:22px;" id="guaranteeLine"></div>
+      <button class="btn btn-accent" id="ctaMain" style="width:100%;">Reserve Your Build</button>
+      <div style="color:var(--muted);font-size:12.5px;margin-top:16px;line-height:1.5;" id="pricingNote"></div>
     </div>
   </div>
 </section>
 
-<section class="section container-narrow" id="apply">
-  <h2 style="margin-bottom:10px;">Apply</h2>
-  <p class="lead" style="margin-bottom:28px;">Tell me a bit about your shop and I'll follow up.</p>
-
-  <form id="applyForm" class="card">
-    <div class="field">
-      <label for="f-name">Your name</label>
-      <input type="text" id="f-name" name="name" required>
+<section class="section container-narrow">
+  <h2 style="margin-bottom:10px;">Questions people ask before starting</h2>
+  <div style="margin-top:24px;">
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="font-size:15px;margin-bottom:8px;">Do I need my own hosting account?</h3>
+      <p class="lead" style="font-size:14px;margin:0;">Yes — your site runs on your own free Cloudflare account, so it's fully yours and nothing runs through me after handoff. I'll walk you through setting it up (takes a few minutes) and handle all the technical configuration myself.</p>
     </div>
-    <div class="field">
-      <label for="f-shop">Shop name</label>
-      <input type="text" id="f-shop" name="shop" required>
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="font-size:15px;margin-bottom:8px;">What do I need to provide?</h3>
+      <p class="lead" style="font-size:14px;margin:0;">Your real services and prices, hours, booking link, contact info, and photos if you have them. If you don't have branding yet, I can help you land on something simple and clean.</p>
     </div>
-    <div class="field">
-      <label for="f-email">Email</label>
-      <input type="email" id="f-email" name="email" required>
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="font-size:15px;margin-bottom:8px;">What if I don't like the direction?</h3>
+      <p class="lead" style="font-size:14px;margin:0;" id="refundFaqLine"></p>
     </div>
-    <div class="field">
-      <label for="f-phone">Phone (optional)</label>
-      <input type="tel" id="f-phone" name="phone">
+    <div class="card">
+      <h3 style="font-size:15px;margin-bottom:8px;">Can I update it myself after it's built?</h3>
+      <p class="lead" style="font-size:14px;margin:0;">Yes — prices, hours, and contact info live in one plain config file. Editing it takes seconds, no code required. And once it's live, you can always reach out with questions as you get comfortable running it.</p>
     </div>
-    <div class="field">
-      <label for="f-link">Current site / Instagram / booking link (if any)</label>
-      <input type="text" id="f-link" name="link">
-    </div>
-    <div class="field">
-      <label for="f-notes">Anything else I should know?</label>
-      <textarea id="f-notes" name="notes"></textarea>
-    </div>
-    <button type="submit" class="btn btn-accent" id="applySubmit" style="width:100%;">Send Application</button>
-    <div class="form-status" id="formStatus"></div>
-    <p class="form-note">
-      <span class="ph-note">Placeholder</span>
-      This form currently just confirms it was submitted — it is not yet wired to send anywhere. Decide where applications should land (this business's inbox, or a separate intake), then connect <code>functions/api/website-application.js</code> to that (e.g. Cloudflare Email Routing or a service like Resend). In the meantime you can also apply directly by email below.
-    </p>
-  </form>
+  </div>
 </section>
 
 <footer style="background:var(--ink-2);border-top:1px solid var(--line);color:var(--muted);text-align:center;padding:34px 20px;font-size:13px;">
-  Prefer email? Write to <a href="#" id="footerEmail" style="color:var(--text-dim);font-weight:700;"></a> — no pressure, no sales call required.
+  Questions first? Email <a href="#" id="footerEmail" style="color:var(--text-dim);font-weight:700;"></a> — no pressure, no sales call required.
 </footer>
 
 <script src="/assets/config.js"></script>
 <script>
 (function(){
-  const S = window.SITE;
-  const emailLink = document.getElementById('footerEmail');
+  const S = window.SITE || {};
+  const o = S.websiteOffer || {};
+
+  document.getElementById('depositPriceTop').textContent = o.depositPrice || '$199.99';
+  document.getElementById('totalPrice').textContent = o.totalPrice || '$399';
+  document.getElementById('guaranteeLine').textContent =
+    `${o.depositPrice || '$199.99'} to reserve your build today · refunded in full if you're not happy with the initial design direction`;
+  document.getElementById('pricingNote').textContent =
+    `Remaining ${o.remainingPrice || '$199.01'} is due when your site is ready to launch. Takes seconds to reserve — I'll follow up within 24 hours to start your build.`;
+  document.getElementById('refundFaqLine').textContent =
+    `Your ${o.depositPrice || '$199.99'} deposit is fully refunded if you're not happy once you see the initial design. No hard feelings, no argument.`;
+
   const email = (S.email || '').replace(/[\[\]]/g,'');
-  emailLink.textContent = S.email || '[your-business-email@example.com]';
-  emailLink.setAttribute('href', 'mailto:' + email);
+  const footerEmail = document.getElementById('footerEmail');
+  footerEmail.textContent = S.email || '[your-business-email@example.com]';
+  footerEmail.setAttribute('href', 'mailto:' + email);
 
-  const form = document.getElementById('applyForm');
-  const status = document.getElementById('formStatus');
-  const submitBtn = document.getElementById('applySubmit');
-
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-    status.className = 'form-status';
-
-    const payload = Object.fromEntries(new FormData(form).entries());
-
-    try {
-      const res = await fetch('/api/website-application', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        status.textContent = "Got it — thanks. I'll follow up soon.";
-        status.classList.add('show', 'ok');
-        form.reset();
-      } else {
-        throw new Error('non-200');
+  async function reserveDeposit(btn){
+    const original = btn.textContent;
+    document.querySelectorAll('#ctaTop,#ctaMain').forEach(b=>{ b.disabled = true; });
+    btn.textContent = 'Redirecting to checkout…';
+    try{
+      const res = await fetch('/api/website-deposit', { method:'POST' });
+      const data = await res.json();
+      if(res.ok && data.url){
+        window.location.href = data.url;
+        return;
       }
-    } catch (err) {
-      status.innerHTML = `Couldn't submit automatically. Please email your info to <a href="mailto:${email}" style="text-decoration:underline;">${S.email || '[your-business-email@example.com]'}</a> instead.`;
-      status.classList.add('show', 'err');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Application';
+      alert('Something went wrong starting checkout. Please try again, or email ' + (S.email || 'us') + '.');
+    }catch(e){
+      alert('Network error starting checkout. Please try again, or email ' + (S.email || 'us') + '.');
+    }finally{
+      document.querySelectorAll('#ctaTop,#ctaMain').forEach(b=>{ b.disabled = false; });
+      btn.textContent = original;
     }
-  });
+  }
+  document.getElementById('ctaTop').addEventListener('click', (e)=>reserveDeposit(e.currentTarget));
+  document.getElementById('ctaMain').addEventListener('click', (e)=>reserveDeposit(e.currentTarget));
+
+  if(new URLSearchParams(location.search).get('canceled')){
+    document.getElementById('statusBanner').innerHTML = '<div class="status-banner">No worries — nothing was charged. Reserve whenever you\'re ready.</div>';
+  }
 })();
 </script>
 </body>

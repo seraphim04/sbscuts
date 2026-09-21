@@ -1,0 +1,8 @@
+{
+  "name": "barber-site",
+  "private": true,
+  "description": "SBS Cuts — static site + Cloudflare Pages Functions (Stripe deposit checkout for the barber-website upsell).",
+  "dependencies": {
+    "stripe": "^17.0.0"
+  }
+}
