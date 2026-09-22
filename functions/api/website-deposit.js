@@ -1,11 +1,10 @@
-// Flat $199.99 deposit toward a $399 flat-rate barber-shop website build
+// Flat $199 deposit toward a $399-starting-price barber-shop website build
 // (the same system SBS Cuts runs on: Home, Services, Gallery, About,
-// Reviews, Contact, all driven by one config file). The remaining $199.01
-// is collected separately once the client's build is ready to launch.
-// Keep this number in sync with the price shown on
-// public/barber-website.html and public/assets/config.js if it ever
-// changes.
-const DEPOSIT_CENTS = 19999;
+// Reviews, Contact, all driven by one config file). The remaining $200 is
+// collected separately once the client's build is ready to launch. Keep
+// this number in sync with the price shown on public/barber-website.html
+// and public/assets/config.js (websiteOffer) if it ever changes.
+const DEPOSIT_CENTS = 19900;
 
 // IMPORTANT: this is a completely separate Stripe account/key from
 // sergotstock's. Set STRIPE_SECRET_KEY in this Cloudflare Pages project's
@@ -50,28 +49,72 @@ function flatten(obj, prefix, params) {
   return params;
 }
 
-// POST /api/website-deposit   body: none — single fixed-price item, so
-// there's nothing to validate before sending the buyer to Stripe. Stripe
-// Checkout itself collects name, email, and phone, plus two short custom
-// fields below so there's enough to start a build without a separate form.
-// Every successful payment shows up in the Stripe Dashboard automatically
-// — that dashboard *is* the leads list, no extra database needed.
+function clean(value, maxLen) {
+  if (typeof value !== 'string') return '';
+  return value
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
+    .trim()
+    .slice(0, maxLen);
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Turns arbitrary applicant text into a short, safe idempotency-key
+// component. Not cryptographic — just enough to keep the key readable
+// and bounded in length.
+async function shortHash(str) {
+  const enc = new TextEncoder().encode(str);
+  const digest = await crypto.subtle.digest('SHA-256', enc);
+  return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 24);
+}
+
+// POST /api/website-deposit
+// body (all optional — this still works with no body at all, e.g. if
+// visited directly): { name, email, businessName }. When the applicant
+// already submitted the full application via /api/apply, that page
+// passes their name/email/business through here so the Stripe session,
+// the dashboard record, and the confirmation email all agree — without
+// risking a second charge for the same applicant within a short window
+// (see idempotency key below).
 export async function onRequestPost({ request, env }) {
   if (!env.STRIPE_SECRET_KEY) {
     return json({ error: 'not_configured', detail: 'STRIPE_SECRET_KEY is not set for this project.' }, 500);
   }
 
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    body = {};
+  }
+
+  const name = clean(body.name, 100);
+  const businessName = clean(body.businessName, 100);
+  const email = isValidEmail(clean(body.email, 200)) ? clean(body.email, 200) : '';
+
   const origin = new URL(request.url).origin;
 
-  const body = flatten({
+  const metadata = {
+    product: 'barber_website_build',
+    deposit_amount: '$199',
+    remaining_amount: '$200',
+  };
+  if (name) metadata.applicant_name = name;
+  if (businessName) metadata.applicant_business = businessName;
+  if (email) metadata.applicant_email = email;
+
+  const sessionParams = {
     mode: 'payment',
     line_items: [{
       price_data: {
         currency: 'usd',
         unit_amount: DEPOSIT_CENTS,
         product_data: {
-          name: 'Barber Website Build — Reservation Deposit',
-          description: "$199.99 to reserve your barber-shop website build ($399 total, $199.01 due at launch). Refunded in full if you're not happy with the initial design direction.",
+          name: 'Barber Website Build — Reservation Deposit ($199 of $399 starting price)',
+          description: "$199 to reserve your barber-shop website build (starting at $399 total — custom features may require a separate quote). The remaining $200 is due once your build is ready to launch. Refunded in full if you're not happy with the initial design direction.",
         },
       },
       quantity: 1,
@@ -82,7 +125,7 @@ export async function onRequestPost({ request, env }) {
         key: 'shop_name',
         label: { type: 'custom', custom: 'Your shop name' },
         type: 'text',
-        text: { maximum_length: 200 },
+        text: { maximum_length: 200, ...(businessName ? { default_value: businessName } : {}) },
       },
       {
         key: 'shop_link',
@@ -91,9 +134,24 @@ export async function onRequestPost({ request, env }) {
         text: { maximum_length: 255 }, // Stripe's hard cap on custom_fields text length
       },
     ],
+    metadata,
     success_url: `${origin}/deposit-confirmed.html?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/barber-website.html?canceled=1`,
-  }, '', new URLSearchParams());
+  };
+  if (email) sessionParams.customer_email = email;
+
+  const formBody = flatten(sessionParams, '', new URLSearchParams());
+
+  // Idempotency key: the same applicant (by email, or name+business if no
+  // email was passed) can't create a second Checkout Session within the
+  // same UTC hour just by double-clicking or refreshing. This does not
+  // prevent two genuinely separate payments days apart — Stripe's own
+  // dashboard remains the source of truth for what was actually charged,
+  // and nothing here auto-charges the remaining $200 balance; that is
+  // always collected later as its own separate, manually-sent charge.
+  const idBasis = email || `${name}|${businessName}` || 'anonymous';
+  const hourBucket = Math.floor(Date.now() / (1000 * 60 * 60));
+  const idempotencyKey = `website-deposit-${await shortHash(idBasis)}-${hourBucket}`;
 
   let res, data;
   try {
@@ -102,8 +160,9 @@ export async function onRequestPost({ request, env }) {
       headers: {
         Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Idempotency-Key': idempotencyKey,
       },
-      body: body.toString(),
+      body: formBody.toString(),
     });
     data = await res.json();
   } catch (err) {

@@ -3,25 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SBS Cuts — Barber</title>
-<meta name="description" content="SBS Cuts — book online. [A short line describing your chair.]">
+<title>SBS Cuts — Barber in Norfolk, VA | Book Online</title>
+<meta name="description" content="SBS Cuts is a barbershop in Norfolk, VA run by Seraphim Davis — clean fades, tapers, lineups, and a professional client experience. Walk-ins welcome, book online anytime.">
 <meta name="theme-color" content="#0D0C0B">
-<link rel="canonical" href="/">
+<link rel="canonical" href="https://sbscuts.pages.dev/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230D0C0B'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-size='58' font-weight='700' fill='%237A2320' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SBS Cuts">
+<meta property="og:title" content="SBS Cuts — Barber in Norfolk, VA">
+<meta property="og:description" content="Clean fades, tapers, and lineups — a professional experience in every chair. Walk-ins welcome, book online anytime.">
+<meta property="og:url" content="https://sbscuts.pages.dev/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SBS Cuts — Barber in Norfolk, VA">
+<meta name="twitter:description" content="Clean fades, tapers, and lineups — a professional experience in every chair.">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  "name": "SBS Cuts",
+  "image": "https://sbscuts.pages.dev/assets/og-image.jpg",
+  "url": "https://sbscuts.pages.dev/",
+  "telephone": "",
+  "email": "sbscuts@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "8206 Hampton Blvd",
+    "addressLocality": "Norfolk",
+    "addressRegion": "VA",
+    "postalCode": "23505",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "17:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Monday", "opens": "10:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Tuesday", "opens": "09:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Wednesday", "opens": "09:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "09:00", "closes": "19:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "19:00" }
+  ],
+  "sameAs": [
+    "https://instagram.com/sbscuts",
+    "https://www.tiktok.com/@sbscutss",
+    "https://www.youtube.com/@sbscuts"
+  ]
+}
+</script>
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="site-header"></div>
+
+<main id="main">
 
 <section class="hero">
   <div class="container">
     <div class="eyebrow">Now Booking</div>
     <h1>SBS Cuts</h1>
-    <p class="lead"><span class="ph" title="Placeholder — replace with real info">A short line describing your chair — e.g. "Classic cuts, straight razor shaves, no rush."</span></p>
+    <p class="lead" id="heroTagline">Clean fades, tapers, and lineups — a professional experience in every chair.</p>
     <div class="hero-ctas">
       <a href="#" class="btn btn-accent js-book" target="_blank" rel="noopener">Book Now</a>
       <a href="/services.html" class="btn btn-outline">See Services &amp; Prices</a>
@@ -33,11 +80,11 @@
       </div>
       <div>
         <strong>Location</strong>
-        <span class="ph" title="Placeholder — replace with real info">City, State</span>
+        <span id="heroLocation">Norfolk, VA</span>
       </div>
       <div>
         <strong>Since</strong>
-        <span class="ph" title="Placeholder — replace with real info">Year you started cutting hair</span>
+        <span id="heroSince">2022</span>
       </div>
     </div>
   </div>
@@ -66,17 +113,10 @@
       <div>
         <span class="eyebrow-dark">About the chair</span>
         <h2>Behind the clippers</h2>
-        <p class="lead" style="margin-bottom:18px;">
-          <span class="ph" title="Placeholder — replace with real info">One or two sentences about your background, training, and what a client can expect walking in. This should be replaced with your real story.</span>
-        </p>
-        <p class="lead" style="color:var(--text-dim);font-size:14px;">
-          <span class="ph" title="Placeholder — replace with real info">Confirm exact credential wording — e.g. "Licensed Barber, State of ___" or "___ years behind the chair."</span>
-        </p>
+        <p class="lead" style="margin-bottom:18px;" id="bioShort"></p>
         <a href="/about.html" class="btn btn-outline btn-small" style="margin-top:20px;display:inline-flex;">Full Story &rarr;</a>
       </div>
-      <div class="gallery-item" style="aspect-ratio:1/1;">
-        <span>Portrait photo goes here<br><span class="ph-note">Placeholder</span></span>
-      </div>
+      <div id="portraitSlot"></div>
     </div>
   </div>
 </section>
@@ -86,13 +126,9 @@
     <div class="section-head">
       <span class="eyebrow-dark">Recent Work</span>
       <h2>A few cuts</h2>
-      <p class="lead">Full gallery, including any video, on the <a href="/gallery.html" style="text-decoration:underline;text-underline-offset:3px;">Gallery page</a>.</p>
+      <p class="lead">Full gallery on the <a href="/gallery.html" style="text-decoration:underline;text-underline-offset:3px;">Gallery page</a>.</p>
     </div>
-    <div class="grid-3">
-      <div class="gallery-item">Haircut photo<br><span class="ph-note">Placeholder</span></div>
-      <div class="gallery-item">Haircut photo<br><span class="ph-note">Placeholder</span></div>
-      <div class="gallery-item">Haircut photo<br><span class="ph-note">Placeholder</span></div>
-    </div>
+    <div id="galleryPreview"></div>
   </div>
 </section>
 
@@ -102,21 +138,35 @@
       <div>
         <span class="eyebrow-dark">Reviews</span>
         <h2>What clients say</h2>
-        <p class="lead" style="margin-bottom:24px;">Read more or leave one yourself on the <a href="/reviews.html" style="text-decoration:underline;text-underline-offset:3px;">Reviews page</a>.</p>
-        <a href="#" id="googleReviewLink" class="btn btn-outline btn-small" target="_blank" rel="noopener">Leave a Google Review &rarr;</a>
+        <p class="lead" style="margin-bottom:24px;">Read more on the <a href="/reviews.html" style="text-decoration:underline;text-underline-offset:3px;">Reviews page</a>.</p>
+      </div>
+      <div id="reviewPreview"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <span class="eyebrow-dark">Policies</span>
+    <h2 style="margin-bottom:20px;">Good to know before you come in</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3 style="font-size:14px;margin-bottom:8px;">Walk-ins</h3>
+        <p class="lead" style="font-size:14px;margin:0;" id="policyWalkIns"></p>
       </div>
       <div class="card">
-        <div class="review-card">
-          <span class="stars">★★★★★</span>
-          <p class="quote"><span class="ph" title="Placeholder — replace with a real review">"Placeholder review text. Replace with an actual client quote once you have one — never fabricate a review."</span></p>
-          <div class="who"><span class="ph" title="Placeholder">— Client name / initials, with permission</span></div>
-        </div>
+        <h3 style="font-size:14px;margin-bottom:8px;">Running late?</h3>
+        <p class="lead" style="font-size:14px;margin:0;" id="policyLate"></p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px;margin-bottom:8px;">Deposits</h3>
+        <p class="lead" style="font-size:14px;margin:0;" id="policyDeposit"></p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-paper">
+<section class="section-paper section">
   <div class="container grid-2">
     <div>
       <span class="eyebrow-dark" style="color:var(--accent);">Hours</span>
@@ -126,12 +176,14 @@
     <div>
       <span class="eyebrow-dark" style="color:var(--accent);">Find the shop</span>
       <h2 class="mt-0">Location</h2>
-      <p class="muted" style="margin:16px 0 4px;"><span class="ph" title="Placeholder — replace with real info">Street address</span></p>
-      <p class="muted" style="margin:0 0 20px;"><span class="ph" title="Placeholder — replace with real info">City, State ZIP</span></p>
+      <p class="muted" id="addrLine1" style="margin:16px 0 4px;"></p>
+      <p class="muted" id="addrLine2" style="margin:0 0 20px;"></p>
       <a href="#" id="mapLink" class="btn btn-accent btn-small" target="_blank" rel="noopener">Get Directions</a>
     </div>
   </div>
 </section>
+
+</main>
 
 <div id="site-footer"></div>
 
@@ -140,6 +192,12 @@
 <script>
 (function(){
   const S = window.SITE;
+
+  document.getElementById('heroTagline').textContent = S.tagline || '';
+  document.getElementById('heroSince').textContent = S.founded || '';
+  if (S.address && S.address.line2) {
+    document.getElementById('heroLocation').textContent = S.address.line2.replace(/\s*\d{5}$/, '');
+  }
 
   // Offer banner
   const offerSlot = document.getElementById('offer-slot').querySelector('.container');
@@ -152,14 +210,6 @@
         </div>
         <a href="/offer.html" class="btn btn-outline-light btn-small">Details &rarr;</a>
       </div>`;
-  } else {
-    offerSlot.innerHTML = `
-      <div class="promo promo-inactive">
-        <div>
-          <h3>First-time client offer</h3>
-          <p>Not currently active. <span class="ph-note">Toggle in config.js</span></p>
-        </div>
-      </div>`;
   }
 
   // Services preview (first 4)
@@ -170,14 +220,73 @@
     row.innerHTML = `
       <div>
         <div class="name">${s.name}</div>
-        ${s.description ? `<div class="note">${window.phWrap(s.description)}</div>` : ''}
+        ${s.description ? `<div class="note">${s.description}</div>` : ''}
       </div>
       <div class="meta">
-        <div class="price">${window.phWrap(s.price)}</div>
-        <div class="duration">${window.phWrap(s.duration)}</div>
+        <div class="price">${s.price}</div>
+        <div class="duration">${s.duration}</div>
       </div>`;
     wrap.appendChild(row);
   });
+
+  // Short bio
+  document.getElementById('bioShort').textContent = S.bioShort || '';
+
+  // Portrait — hidden entirely until a real photo is configured.
+  const portraitSlot = document.getElementById('portraitSlot');
+  if (S.barberPhoto) {
+    portraitSlot.innerHTML = `<img src="${S.barberPhoto}" alt="${S.barberName || 'The barber'} at SBS Cuts" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);">`;
+  } else {
+    portraitSlot.remove();
+  }
+
+  // Gallery preview — hidden (replaced with a quiet empty state) until
+  // real photos exist in config.gallery.
+  const galleryPreview = document.getElementById('galleryPreview');
+  if (S.gallery && S.gallery.length) {
+    const grid = document.createElement('div');
+    grid.className = 'grid-3';
+    S.gallery.slice(0, 3).forEach(function(g){
+      const item = document.createElement('div');
+      item.innerHTML = `<img src="${g.src}" alt="${g.alt || ''}" style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);">`;
+      grid.appendChild(item.firstElementChild);
+    });
+    galleryPreview.appendChild(grid);
+  } else {
+    galleryPreview.innerHTML = `
+      <div class="empty-state">
+        <h3>Photos coming soon</h3>
+        <p>Fresh work from the chair will be posted here. In the meantime, follow along on Instagram and TikTok for the latest cuts.</p>
+      </div>`;
+  }
+
+  // Reviews preview — hidden until config.reviews has real entries. No
+  // Google review link anywhere; TheCut booking profile is where reviews
+  // live.
+  const reviewPreview = document.getElementById('reviewPreview');
+  if (S.reviews && S.reviews.length) {
+    const r = S.reviews[0];
+    reviewPreview.innerHTML = `
+      <div class="card">
+        <div class="review-card">
+          <span class="stars">${'★'.repeat(r.rating || 5)}</span>
+          <p class="quote">"${r.quote}"</p>
+          <div class="who">— ${r.name}</div>
+        </div>
+      </div>`;
+  } else {
+    reviewPreview.innerHTML = `
+      <div class="empty-state">
+        <h3>New here</h3>
+        <p>Reviews will be added here as they come in. See client feedback directly on the TheCut booking profile.</p>
+      </div>`;
+  }
+
+  // Policies
+  const policies = S.policies || {};
+  document.getElementById('policyWalkIns').textContent = policies.walkIns || '';
+  document.getElementById('policyLate').textContent = policies.lateArrival || '';
+  document.getElementById('policyDeposit').textContent = policies.deposit || '';
 
   // Hours table
   const hoursTable = document.getElementById('hoursTable');
@@ -193,9 +302,11 @@
     todayEl.textContent = S.hours[new Date().getDay()].time;
   }
 
-  // Links
-  document.getElementById('mapLink').setAttribute('href', (S.address && S.address.mapUrl) || '#');
-  document.getElementById('googleReviewLink').setAttribute('href', (S.social && S.social.googleReviewUrl) || '#');
+  // Address / map
+  const addr = S.address || {};
+  document.getElementById('addrLine1').textContent = addr.line1 || '';
+  document.getElementById('addrLine2').textContent = addr.line2 || '';
+  document.getElementById('mapLink').setAttribute('href', addr.mapUrl || '#');
 })();
 </script>
 </body>

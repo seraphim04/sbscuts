@@ -26,9 +26,9 @@
     <h1>You're locked in.</h1>
     <p id="depositLine">Your deposit is confirmed — a receipt is on its way to your email from Stripe. That reserves your build. The remainder isn't due until your site is ready to launch.</p>
     <div class="card steps">
-      <p><strong>What happens next:</strong> I'll reach out by email within 24 hours to get started.</p>
-      <p>In the meantime, it helps to have ready: your shop's logo or branding (if you have any), a few photos, and your real service menu, hours, and booking link — or just tell me your style and we'll figure it out together.</p>
-      <p>Remember: if you're not happy once you see the initial direction, your deposit is refunded in full — just reply to the receipt email or reach out below.</p>
+      <p><strong>What happens next:</strong> expect an email within 24 hours to get your build started.</p>
+      <p>It helps to have ready: your shop's logo or branding (if you have any), a few photos, and your real service menu, hours, and booking link — or just share your style and it can be figured out together.</p>
+      <p>If you're not happy once you see the initial direction, your deposit is refunded in full — just reply to the receipt email or reach out below.</p>
     </div>
     <p>Questions in the meantime? Email <a href="#" id="contactEmail" style="color:var(--text);font-weight:700;"></a>.</p>
     <a class="btn btn-accent" href="/">Back to SBS Cuts</a>
@@ -39,8 +39,8 @@
       const S = window.SITE || {};
       const o = S.websiteOffer || {};
       const email = document.getElementById('contactEmail');
-      email.textContent = S.email || '[your-business-email@example.com]';
-      email.setAttribute('href', 'mailto:' + (S.email || '').replace(/[\[\]]/g,''));
+      email.textContent = S.email || '';
+      email.setAttribute('href', 'mailto:' + (S.email || ''));
       if (o.depositPrice && o.remainingPrice) {
         document.getElementById('depositLine').textContent =
           `Your ${o.depositPrice} deposit is confirmed — a receipt is on its way to your email from Stripe. That reserves your build. The remaining ${o.remainingPrice} isn't due until your site is ready to launch.`;

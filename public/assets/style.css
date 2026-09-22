@@ -44,40 +44,6 @@ img{max-width:100%;display:block;}
 .container-narrow{max-width:760px;margin:0 auto;padding:0 24px;}
 :focus-visible{outline:3px solid var(--accent-hi);outline-offset:2px;}
 
-/* ---- placeholder flag ------------------------------------------------ */
-.ph{
-  border-bottom:2px dashed var(--accent-hi);
-  background:rgba(154,47,42,0.14);
-  padding:0 3px;
-  cursor:help;
-  border-radius:1px;
-}
-.ph-note{
-  display:inline-block;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--accent-hi);
-  background:rgba(154,47,42,0.12);
-  border:1px solid rgba(154,47,42,0.4);
-  padding:2px 8px;
-  border-radius:2px;
-  margin-left:8px;
-  vertical-align:middle;
-}
-
-/* ---- top banner (shown while placeholders remain) --------------------- */
-.build-banner{
-  background:#2A1210;
-  color:#F0C9C4;
-  text-align:center;
-  font-size:13px;
-  padding:9px 16px;
-  border-bottom:1px solid rgba(154,47,42,0.5);
-}
-.build-banner strong{color:#fff;}
-
 /* ---- nav --------------------------------------------------------------- */
 header.site-nav{
   background:rgba(13,12,11,0.92);
@@ -96,6 +62,12 @@ header.site-nav{
 .nav-links a{font-size:13px;font-weight:600;letter-spacing:0.03em;text-transform:uppercase;color:var(--text-dim);}
 .nav-links a:hover,.nav-links a.active{color:var(--text);}
 .nav-book{white-space:nowrap;}
+.nav-pill{
+  border:1.5px solid var(--accent-hi);color:var(--accent-hi)!important;
+  padding:8px 16px;border-radius:999px;white-space:nowrap;font-size:12px!important;
+}
+.nav-pill:hover,.nav-pill.active,.nav-pill[aria-current="page"]{background:var(--accent-hi);color:var(--accent-text)!important;}
+@media (max-width:760px){.nav-pill{display:inline-block;margin:6px 0;}}
 .nav-toggle{display:none;}
 @media (max-width:760px){
   .nav-links{
@@ -234,6 +206,43 @@ footer.site-footer{background:var(--ink-2);border-top:1px solid var(--line);padd
 .footer-bottom .upsell-link{font-size:12.5px;color:var(--muted);}
 .footer-bottom .upsell-link a{color:var(--muted);text-decoration:underline;text-underline-offset:3px;}
 .footer-bottom .upsell-link a:hover{color:var(--text-dim);}
+
+/* ---- empty states (gallery/reviews before real content exists) ------------ */
+.empty-state{
+  border:1px solid var(--line);border-radius:var(--radius);padding:48px 32px;
+  text-align:center;color:var(--text-dim);
+}
+.empty-state h3{font-size:20px;margin-bottom:10px;color:var(--text);}
+.empty-state p{font-size:14px;line-height:1.6;max-width:44ch;margin:0 auto;color:var(--muted);}
+
+/* ---- checkbox field (terms acknowledgment) --------------------------------- */
+.field-checkbox{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px;}
+.field-checkbox input[type="checkbox"]{margin-top:3px;width:18px;height:18px;flex-shrink:0;accent-color:var(--accent-hi);}
+.field-checkbox label{font-size:13.5px;line-height:1.6;color:var(--text-dim);font-weight:400;text-transform:none;letter-spacing:normal;}
+.field-checkbox a{color:var(--text);text-decoration:underline;text-underline-offset:2px;}
+
+.field select{
+  width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--text);
+  padding:13px 14px;font-size:15px;font-family:inherit;border-radius:var(--radius);
+}
+.field select:focus{border-color:var(--accent-hi);}
+
+/* ---- terms box -------------------------------------------------------------- */
+.terms-box{
+  background:var(--ink-2);border:1px solid var(--line);padding:20px 22px;
+  font-size:13.5px;line-height:1.7;color:var(--text-dim);margin:22px 0;border-radius:var(--radius);
+}
+.terms-box h4{color:var(--text);font-size:13px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;font-family:'Inter';}
+
+/* ---- skip link (accessibility) ---------------------------------------------- */
+.skip-link{
+  position:absolute;left:-9999px;top:0;background:var(--accent);color:var(--accent-text);
+  padding:12px 20px;z-index:100;font-weight:700;font-size:14px;
+}
+.skip-link:focus{left:12px;top:12px;}
+
+/* honeypot field — hidden from sighted users and screen readers, left open for bots */
+.hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
 
 /* ---- utility ---------------------------------------------------------------- */
 .mt-0{margin-top:0;}

@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First-Time Offer — SBS Cuts</title>
-<meta name="description" content="Details on the current new-client offer at SBS Cuts.">
+<title>Bring 3, Get Yours Free — SBS Cuts</title>
+<meta name="description" content="Details on the current referral offer at SBS Cuts: bring three clients who book same-day, and your own cut is free.">
 <meta name="theme-color" content="#0D0C0B">
-<link rel="canonical" href="/offer.html">
+<link rel="canonical" href="https://sbscuts.pages.dev/offer.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230D0C0B'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-size='58' font-weight='700' fill='%237A2320' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SBS Cuts">
+<meta property="og:title" content="Bring 3, Get Yours Free — SBS Cuts">
+<meta property="og:description" content="Bring three clients who book same-day, and your own cut is free.">
+<meta property="og:url" content="https://sbscuts.pages.dev/offer.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,12 +20,15 @@
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="site-header"></div>
+
+<main id="main">
 
 <section class="hero" style="padding:64px 0 52px;">
   <div class="container">
     <div class="eyebrow">Offer</div>
-    <h1 id="offerHeadline" style="font-size:clamp(32px,5vw,52px);">First 3 New Clients: One Service Free</h1>
+    <h1 id="offerHeadline" style="font-size:clamp(32px,5vw,52px);">Bring 3, Get Yours Free</h1>
     <p class="lead" id="offerStatusLine"></p>
   </div>
 </section>
@@ -37,15 +45,17 @@
   </div>
 </section>
 
+</main>
+
 <div id="site-footer"></div>
 
 <script src="/assets/config.js"></script>
 <script src="/assets/site.js"></script>
 <script>
 (function(){
-  const S = window.SITE;
+  const S = window.SITE || {};
   const offer = S.offer || {};
-  document.getElementById('offerHeadline').textContent = offer.headline || 'First 3 New Clients: One Service Free';
+  document.getElementById('offerHeadline').textContent = offer.headline || 'Bring 3, Get Yours Free';
   const body = document.getElementById('offerBody');
   const statusLine = document.getElementById('offerStatusLine');
 
@@ -54,19 +64,16 @@
     body.innerHTML = `
       <div class="container-narrow">
         <div class="card">
-          <p class="lead" style="margin-bottom:0;">${offer.terms || '[Terms not yet confirmed]'}</p>
+          <p class="lead" style="margin-bottom:0;">${offer.terms || ''}</p>
         </div>
       </div>`;
   } else {
-    statusLine.innerHTML = 'This offer is <span class="ph" title="Placeholder — confirm status">not currently confirmed as active</span>.';
+    statusLine.textContent = 'This offer is not currently active.';
     body.innerHTML = `
       <div class="container-narrow">
         <div class="card" style="border-style:dashed;">
-          <p class="lead" style="margin-bottom:12px;">
-            <span class="ph-note">Placeholder</span> This page exists so the offer has a home once it's confirmed, but it is not being promoted anywhere on the site yet.
-          </p>
           <p class="lead" style="margin-bottom:0;color:var(--muted);font-size:14px;">
-            To turn it on: set <code>offer.active</code> to <code>true</code> in <code>/assets/config.js</code> and fill in the exact terms — which service qualifies, any restrictions, and how a client claims it. It will then also appear as a banner on the Home page automatically.
+            Check back here or follow along on Instagram and TikTok for when this offer is running again.
           </p>
         </div>
       </div>`;

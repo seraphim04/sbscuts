@@ -1,8 +1,5 @@
 {
   "name": "barber-site",
   "private": true,
-  "description": "SBS Cuts — static site + Cloudflare Pages Functions (Stripe deposit checkout for the barber-website upsell).",
-  "dependencies": {
-    "stripe": "^17.0.0"
-  }
+  "description": "SBS Cuts — static site + Cloudflare Pages Functions. No build step and no npm dependencies: functions/api/website-deposit.js and functions/api/stripe-webhook.js call the Stripe API directly over fetch() and verify webhook signatures with the Web Crypto API, and functions/api/apply.js calls the Resend API over fetch() — all without any npm package, since this project has no build command configured for Cloudflare to run `npm install` against."
 }

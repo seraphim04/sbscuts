@@ -1,7 +1,7 @@
 // GET /sitemap.xml — generated at request time so it always matches the
 // actual deployed domain, with no hardcoded hostname to keep in sync.
-// barber-website.html is intentionally left out: it's a quiet footer link
-// for shop owners, not something meant to show up in search results.
+// barber-website.html is included: it's now a prominent, indexable nav
+// tab (the "Get Your Website" link), not a hidden footer-only page.
 
 const PAGES = [
   '/',
@@ -11,6 +11,7 @@ const PAGES = [
   '/reviews.html',
   '/contact.html',
   '/offer.html',
+  '/barber-website.html',
 ];
 
 export async function onRequestGet({ request }) {

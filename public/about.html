@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — SBS Cuts</title>
-<meta name="description" content="The story, background, and philosophy behind SBS Cuts.">
+<title>About Seraphim Davis — SBS Cuts</title>
+<meta name="description" content="Meet Seraphim Davis, the barber and entrepreneur behind SBS Cuts in Norfolk, VA — his background, values, and approach behind the chair.">
 <meta name="theme-color" content="#0D0C0B">
-<link rel="canonical" href="/about.html">
+<link rel="canonical" href="https://sbscuts.pages.dev/about.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230D0C0B'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-size='58' font-weight='700' fill='%237A2320' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SBS Cuts">
+<meta property="og:title" content="About Seraphim Davis — SBS Cuts">
+<meta property="og:description" content="The barber and entrepreneur behind SBS Cuts — background, values, and approach behind the chair.">
+<meta property="og:url" content="https://sbscuts.pages.dev/about.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,38 +20,34 @@
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="site-header"></div>
+
+<main id="main">
 
 <section class="hero" style="padding:64px 0 52px;">
   <div class="container">
     <div class="eyebrow">About</div>
     <h1 style="font-size:clamp(32px,5vw,52px);">Behind the chair</h1>
-    <p class="lead"><span class="ph" title="Placeholder — replace with real info">Confirm exact credential wording — e.g. "Licensed Barber, State of ___" or "___ years behind the chair."</span></p>
+    <p class="lead" id="heroLine"></p>
   </div>
 </section>
 
 <section class="section">
-  <div class="container grid-2" style="align-items:start;">
-    <div class="gallery-item" style="aspect-ratio:3/4;">
-      <span>Portrait photo goes here<br><span class="ph-note">Placeholder</span></span>
-    </div>
-    <div>
+  <div class="container grid-2" style="align-items:start;" id="storyGrid">
+    <div id="portraitSlot"></div>
+    <div id="storyCol">
       <h2 style="margin-bottom:18px;">The story</h2>
-      <p class="lead" style="margin-bottom:16px;">
-        <span class="ph" title="Placeholder — replace with real info">Write two or three paragraphs here about how you got started, where you trained, and what drew you to barbering. This is placeholder text and should be replaced with your real story before launch — nothing here should be invented on your behalf.</span>
-      </p>
-      <p class="lead" style="margin-bottom:16px;">
-        <span class="ph" title="Placeholder — replace with real info">A paragraph about your approach or philosophy in the chair — what a client should expect: pace, attention to detail, conversation style, whatever is true to how you actually work.</span>
-      </p>
+      <div id="bioParagraphs"></div>
       <div class="card" style="margin-top:28px;">
         <div class="hero-meta" style="margin-top:0;gap:32px;">
           <div>
             <strong>Cutting Since</strong>
-            <span class="ph" title="Placeholder">Year</span>
+            <span id="sinceLine"></span>
           </div>
           <div>
-            <strong>Credential</strong>
-            <span class="ph" title="Placeholder">Confirm wording</span>
+            <strong>Experience</strong>
+            <span id="experienceLine"></span>
           </div>
         </div>
       </div>
@@ -62,9 +63,40 @@
   </div>
 </section>
 
+</main>
+
 <div id="site-footer"></div>
 
 <script src="/assets/config.js"></script>
 <script src="/assets/site.js"></script>
+<script>
+(function(){
+  const S = window.SITE || {};
+
+  document.getElementById('heroLine').textContent = S.experienceLine || '';
+  document.getElementById('sinceLine').textContent = S.founded || '';
+  document.getElementById('experienceLine').textContent = S.experienceLine || '';
+
+  const bioWrap = document.getElementById('bioParagraphs');
+  (S.bioFull || []).forEach(function(p){
+    const el = document.createElement('p');
+    el.className = 'lead';
+    el.style.marginBottom = '16px';
+    el.textContent = p;
+    bioWrap.appendChild(el);
+  });
+
+  // Portrait — hidden entirely (story column expands full-width) until a
+  // real photo is configured.
+  const portraitSlot = document.getElementById('portraitSlot');
+  if (S.barberPhoto) {
+    portraitSlot.innerHTML = `<img src="${S.barberPhoto}" alt="${S.barberName || 'The barber'} at SBS Cuts" style="width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--radius);border:1px solid var(--line);">`;
+  } else {
+    portraitSlot.remove();
+    document.getElementById('storyGrid').style.gridTemplateColumns = '1fr';
+    document.getElementById('storyCol').style.maxWidth = '68ch';
+  }
+})();
+</script>
 </body>
 </html>
