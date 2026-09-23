@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rewards Program — SBS Cuts</title>
+<meta name="description" content="Check your rewards progress at SBS Cuts — every 6th haircut is on the house.">
+<meta name="theme-color" content="#0D0C0B">
+<link rel="canonical" href="https://sbscuts.pages.dev/rewards.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230D0C0B'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-size='58' font-weight='700' fill='%237A2320' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SBS Cuts">
+<meta property="og:title" content="Rewards Program — SBS Cuts">
+<meta property="og:description" content="Every 6th haircut is on the house. Check your progress anytime.">
+<meta property="og:url" content="https://sbscuts.pages.dev/rewards.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .progress-track{background:var(--ink);border:1px solid var(--line);border-radius:999px;height:14px;overflow:hidden;margin:18px 0 10px;}
+  .progress-fill{background:var(--accent);height:100%;border-radius:999px;transition:width 0.4s ease;}
+  .stamp-row{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0;}
+  .stamp{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);flex-shrink:0;}
+  .stamp.filled{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+  .stamp.small{width:22px;height:22px;font-size:11px;}
+  .tab-row{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);}
+  .tab-btn{background:none;border:none;color:var(--muted);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.04em;padding:12px 4px;margin-right:20px;border-bottom:2px solid transparent;}
+  .tab-btn.active{color:var(--text);border-bottom-color:var(--accent-hi);}
+  .lb-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft);}
+  .lb-row:first-child{padding-top:0;}
+  .lb-rank{color:var(--muted);font-size:13px;font-weight:700;width:22px;flex-shrink:0;}
+  .lb-name{font-weight:600;flex:1;}
+  .lb-stamps{display:flex;gap:4px;flex-shrink:0;}
+  .lb-ready{color:var(--accent-hi);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+
+<section class="hero" style="padding:64px 0 52px;">
+  <div class="container">
+    <div class="eyebrow">Rewards</div>
+    <h1 style="font-size:clamp(32px,5vw,52px);">Rewards Program</h1>
+    <p class="lead" id="rewardDescription">Every 6th haircut is on the house.</p>
+  </div>
+</section>
+
+<section class="section" id="rewardsSection">
+  <div class="container-narrow" id="rewardsWrap"></div>
+</section>
+
+<section class="section section-alt center">
+  <div class="container-narrow">
+    <h2 style="margin-bottom:14px;">Not signed up yet?</h2>
+    <p class="lead" style="margin:0 auto 28px;">Every visit counts automatically once you're in the system — just ask to be added on your next cut.</p>
+    <a href="#" class="btn btn-accent js-book" target="_blank" rel="noopener">Book Now</a>
+  </div>
+</section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/assets/config.js"></script>
+<script src="/assets/site.js"></script>
+<script>
+(function(){
+  const S = window.SITE || {};
+  const rewards = S.rewards || {};
+  const wrap = document.getElementById('rewardsWrap');
+
+  document.getElementById('rewardDescription').textContent =
+    rewards.rewardDescription || 'Ask in shop about the current rewards program.';
+
+  if (!rewards.active) {
+    wrap.innerHTML = `
+      <div class="empty-state">
+        <h3>Not active right now</h3>
+        <p>The rewards program isn't currently running. Check back soon.</p>
+      </div>`;
+    return;
+  }
+
+  const perReward = rewards.visitsPerReward || 6;
+
+  wrap.innerHTML = `
+    <div class="tab-row">
+      <button class="tab-btn active" id="tabProgress" type="button">My Progress</button>
+      <button class="tab-btn" id="tabLeaderboard" type="button">Leaderboard</button>
+    </div>
+    <div id="progressPane">
+      <div class="card">
+        <h3 style="font-family:'Playfair Display';font-size:19px;margin-bottom:6px;">Check your progress</h3>
+        <p class="lead" style="font-size:14px;margin:0 0 18px;">Enter the phone number used when you're checked in for a cut.</p>
+        <div class="field" style="margin-bottom:14px;">
+          <label for="phoneInput">Phone number</label>
+          <input type="tel" id="phoneInput" autocomplete="tel" placeholder="(555) 555-5555">
+        </div>
+        <button class="btn btn-accent" id="checkBtn" style="width:100%;">Check My Rewards</button>
+        <div class="form-status" id="statusMsg" role="status" aria-live="polite"></div>
+        <div id="resultBox" style="margin-top:22px;"></div>
+      </div>
+    </div>
+    <div id="leaderboardPane" style="display:none;">
+      <div class="card">
+        <h3 style="font-family:'Playfair Display';font-size:19px;margin-bottom:6px;">Current rotation</h3>
+        <p class="lead" style="font-size:14px;margin:0 0 18px;">Shows where each opted-in regular stands toward their next free cut — never how many they've earned in total, just where they are right now.</p>
+        <div id="leaderboardBox"></div>
+      </div>
+    </div>`;
+
+  // ---- Tabs -------------------------------------------------------------
+  const tabProgress = document.getElementById('tabProgress');
+  const tabLeaderboard = document.getElementById('tabLeaderboard');
+  const progressPane = document.getElementById('progressPane');
+  const leaderboardPane = document.getElementById('leaderboardPane');
+  let leaderboardLoaded = false;
+
+  tabProgress.addEventListener('click', function(){
+    tabProgress.classList.add('active');
+    tabLeaderboard.classList.remove('active');
+    progressPane.style.display = '';
+    leaderboardPane.style.display = 'none';
+  });
+  tabLeaderboard.addEventListener('click', function(){
+    tabLeaderboard.classList.add('active');
+    tabProgress.classList.remove('active');
+    progressPane.style.display = 'none';
+    leaderboardPane.style.display = '';
+    if (!leaderboardLoaded) { leaderboardLoaded = true; loadLeaderboard(); }
+  });
+
+  // ---- My Progress --------------------------------------------------------
+  const phoneInput = document.getElementById('phoneInput');
+  const checkBtn = document.getElementById('checkBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const resultBox = document.getElementById('resultBox');
+
+  function showStatus(message, kind) {
+    statusMsg.textContent = message;
+    statusMsg.className = message ? 'form-status show ' + kind : 'form-status';
+  }
+
+  function renderResult(data) {
+    const stamps = Array.from({ length: perReward }, (_, i) =>
+      `<div class="stamp${i < data.visits ? ' filled' : ''}">${i < data.visits ? '✓' : ''}</div>`
+    ).join('');
+    const pct = Math.min(100, Math.round((data.visits / perReward) * 100));
+
+    let headline;
+    if (data.rewardReady) {
+      headline = `<strong style="color:var(--accent-hi);">Your next cut is free — just mention it when you're in!</strong>`;
+    } else if (!data.found) {
+      headline = `No visits on file yet for this number. Ask to be added to the rewards program on your next cut.`;
+    } else {
+      headline = `${data.visitsRemaining} more visit${data.visitsRemaining === 1 ? '' : 's'} until your next free cut.`;
+    }
+
+    resultBox.innerHTML = `
+      <p class="lead" style="font-size:14px;margin-bottom:0;">${headline}</p>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%;"></div></div>
+      <div class="stamp-row">${stamps}</div>
+    `;
+  }
+
+  async function checkStatus() {
+    const phone = phoneInput.value.trim();
+    if (phone.replace(/\D/g, '').length < 7) {
+      showStatus('Enter a valid phone number.', 'err');
+      return;
+    }
+    checkBtn.disabled = true;
+    checkBtn.textContent = 'Checking…';
+    showStatus('', '');
+    resultBox.innerHTML = '';
+
+    try {
+      const res = await fetch('/api/rewards-status', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showStatus('Rewards lookup isn\'t available right now. Please ask in shop.', 'err');
+      } else {
+        renderResult(data);
+      }
+    } catch {
+      showStatus('Network error checking your rewards. Please try again.', 'err');
+    } finally {
+      checkBtn.disabled = false;
+      checkBtn.textContent = 'Check My Rewards';
+    }
+  }
+
+  checkBtn.addEventListener('click', checkStatus);
+  phoneInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); checkStatus(); } });
+
+  // ---- Leaderboard --------------------------------------------------------
+  async function loadLeaderboard() {
+    const box = document.getElementById('leaderboardBox');
+    box.innerHTML = '<p class="muted small">Loading…</p>';
+    try {
+      const res = await fetch('/api/rewards-leaderboard');
+      const data = await res.json();
+      if (!res.ok) {
+        box.innerHTML = '<p class="muted small">Leaderboard isn\'t available right now.</p>';
+        return;
+      }
+      const entries = data.entries || [];
+      if (!entries.length) {
+        box.innerHTML = `
+          <div class="empty-state" style="padding:32px 20px;">
+            <h3 style="font-size:17px;">No one on the board yet</h3>
+            <p>Ask to be added when you're opting in to the rewards program.</p>
+          </div>`;
+        return;
+      }
+      box.innerHTML = entries.map(function(e, i){
+        const stamps = Array.from({ length: e.visitsPerReward }, (_, s) =>
+          `<div class="stamp small${s < e.visits ? ' filled' : ''}"></div>`
+        ).join('');
+        return `
+          <div class="lb-row">
+            <div class="lb-rank">${i + 1}</div>
+            <div class="lb-name">${e.displayName}</div>
+            ${e.rewardReady ? '<div class="lb-ready">Free cut ready</div>' : `<div class="lb-stamps">${stamps}</div>`}
+          </div>`;
+      }).join('');
+    } catch {
+      box.innerHTML = '<p class="muted small">Network error loading the leaderboard.</p>';
+    }
+  }
+})();
+</script>
+</body>
+</html>

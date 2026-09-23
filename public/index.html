@@ -96,6 +96,12 @@
   </div>
 </section>
 
+<section class="section" id="rewards-slot" style="padding-top:0;">
+  <div class="container">
+    <!-- Rewards teaser injected here by script below, only when active in config.js -->
+  </div>
+</section>
+
 <section class="section section-alt">
   <div class="container">
     <div class="section-head">
@@ -209,6 +215,19 @@
           <p>${S.offer.terms}</p>
         </div>
         <a href="/offer.html" class="btn btn-outline-light btn-small">Details &rarr;</a>
+      </div>`;
+  }
+
+  // Rewards teaser
+  const rewardsSlot = document.getElementById('rewards-slot').querySelector('.container');
+  if (S.rewards && S.rewards.active) {
+    rewardsSlot.innerHTML = `
+      <div class="promo promo-inactive">
+        <div>
+          <h3>Rewards Program</h3>
+          <p>${S.rewards.rewardDescription || 'Ask in shop about the current rewards program.'}</p>
+        </div>
+        <a href="/rewards.html" class="btn btn-outline btn-small">Check Progress &rarr;</a>
       </div>`;
   }
 

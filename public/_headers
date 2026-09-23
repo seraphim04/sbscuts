@@ -10,3 +10,10 @@
 
 /api/*
   Cache-Control: no-store
+
+# Staff-only rewards page: keeps client names/phone numbers/PINs out of any
+# cache, and tells search engines not to index it even if the /admin/
+# Disallow in robots.txt is ever ignored.
+/admin/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow

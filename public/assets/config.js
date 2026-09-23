@@ -109,6 +109,23 @@ window.SITE = {
     terms: "Bring three separate clients with you, each booking and paying for their own service on the same day as yours, and your own regular haircut service — including everything normally included with it — is free."
   },
 
+  // ---- Rewards program --------------------------------------------------
+  // Visit-based punch card: every `visitsPerReward`-th cut is free. Visits
+  // are logged by staff (phone-number lookup) on the PIN-protected
+  // /admin/rewards.html page — there's no automatic way to detect a
+  // completed booking from TheCut, since it doesn't currently offer a
+  // public API or webhook for that. A client checks their own progress at
+  // /rewards.html. Keep `visitsPerReward` in sync with the same constant
+  // in functions/api/rewards-status.js, rewards-log.js, and
+  // rewards-redeem.js if it ever changes. Requires the REWARDS_KV and
+  // ADMIN_PIN setup described in DEPLOYMENT.md — the program hides itself
+  // (rewards.html shows a "not set up yet" message) until those exist.
+  rewards: {
+    active: true,
+    visitsPerReward: 6,
+    rewardDescription: "Every 6th haircut is on the house."
+  },
+
   // ---- Reviews (empty by design — see file header for how to add) -----
   reviews: [],
 

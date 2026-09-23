@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rewards — Staff</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%230D0C0B'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-size='58' font-weight='700' fill='%237A2320' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  body{min-height:100vh;}
+  .wrap{max-width:480px;margin:0 auto;padding:56px 20px;}
+  .stamp{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);}
+  .stamp.filled{background:var(--accent);border-color:var(--accent);color:var(--accent-text);}
+  .stamp-row{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1 style="font-size:24px;margin-bottom:6px;">Rewards — Staff</h1>
+  <p class="lead" style="font-size:13.5px;margin-bottom:24px;">Not linked anywhere on the public site. Bookmark this page — don't share the link or your PIN.</p>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="field" style="margin-bottom:0;">
+      <label for="pinInput">Staff PIN</label>
+      <input type="password" id="pinInput" autocomplete="off" inputmode="numeric">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="phoneInput">Client phone number</label>
+      <input type="tel" id="phoneInput" autocomplete="off" placeholder="(555) 555-5555">
+    </div>
+    <div class="field" style="margin-bottom:14px;">
+      <label for="nameInput">Client name (optional)</label>
+      <input type="text" id="nameInput" autocomplete="off">
+    </div>
+    <div class="field-checkbox" style="margin-bottom:18px;">
+      <input type="checkbox" id="optInInput">
+      <label for="optInInput">Show on public leaderboard (only a first name + last initial and current progress are ever shown — never a phone number or full name). Only check this once the client has actually agreed to it.</label>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-accent" id="lookupBtn" style="flex:1;">Look Up</button>
+      <button class="btn btn-outline" id="addBtn" style="flex:1;">Add Visit</button>
+    </div>
+    <button class="btn btn-outline btn-small" id="saveOptInBtn" style="width:100%;margin-top:10px;">Save Leaderboard Choice Only (No Visit Added)</button>
+    <div class="form-status" id="statusMsg" role="status" aria-live="polite"></div>
+    <div id="resultBox" style="margin-top:18px;"></div>
+  </div>
+</div>
+
+<script src="../assets/config.js"></script>
+<script>
+(function(){
+  const S = window.SITE || {};
+  const perReward = (S.rewards && S.rewards.visitsPerReward) || 6;
+
+  const pinInput = document.getElementById('pinInput');
+  const phoneInput = document.getElementById('phoneInput');
+  const nameInput = document.getElementById('nameInput');
+  const optInInput = document.getElementById('optInInput');
+  const lookupBtn = document.getElementById('lookupBtn');
+  const addBtn = document.getElementById('addBtn');
+  const saveOptInBtn = document.getElementById('saveOptInBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const resultBox = document.getElementById('resultBox');
+
+  function showStatus(message, kind) {
+    statusMsg.textContent = message;
+    statusMsg.className = message ? 'form-status show ' + kind : 'form-status';
+  }
+
+  function renderResult(data) {
+    if (data.error) {
+      resultBox.innerHTML = '';
+      const messages = {
+        invalid_pin: 'Incorrect PIN.',
+        too_many_attempts: 'Too many incorrect PIN attempts. Wait 15 minutes and try again.',
+        invalid_phone: 'Enter a valid phone number.',
+        not_configured: 'Rewards isn\'t fully set up yet (missing ADMIN_PIN or REWARDS_KV) — see DEPLOYMENT.md.',
+        reward_not_ready: `Not ready yet — ${data.visits || 0} of ${data.visitsPerReward || perReward} visits.`,
+      };
+      showStatus(messages[data.error] || 'Something went wrong.', 'err');
+      return;
+    }
+    showStatus('', '');
+    const stamps = Array.from({ length: data.visitsPerReward }, (_, i) =>
+      `<div class="stamp${i < data.visits ? ' filled' : ''}">${i < data.visits ? '✓' : ''}</div>`
+    ).join('');
+    // Keep the opt-in checkbox in sync with whatever's actually saved,
+    // so it doesn't silently drift from what a lookup just showed.
+    if (typeof data.leaderboardOptIn === 'boolean') optInInput.checked = data.leaderboardOptIn;
+    resultBox.innerHTML = `
+      <p style="font-weight:700;margin-bottom:4px;">${data.name || 'No name on file'} — ${data.phone}</p>
+      <p class="muted small" style="margin:0 0 6px;">${data.visits} of ${data.visitsPerReward} visits${data.rewardReady ? ' — reward ready!' : ''}${data.leaderboardOptIn ? ' · on leaderboard' : ''}</p>
+      <div class="stamp-row">${stamps}</div>
+      ${data.totalRedeemed ? `<p class="muted small" style="margin-top:6px;">${data.totalRedeemed} redeemed total (staff view only — never shown to clients).</p>` : ''}
+      ${data.rewardReady ? `<button class="btn btn-accent btn-small" id="redeemBtn" style="margin-top:10px;">Redeem Reward</button>` : ''}
+    `;
+    const redeemBtn = document.getElementById('redeemBtn');
+    if (redeemBtn) redeemBtn.addEventListener('click', redeem);
+  }
+
+  function currentPhone() { return phoneInput.value.trim(); }
+  function currentPin() { return pinInput.value; }
+
+  async function call(endpoint, extra) {
+    const phone = currentPhone();
+    const pin = currentPin();
+    if (!pin) { showStatus('Enter the staff PIN.', 'err'); return null; }
+    if (phone.replace(/\D/g, '').length < 7) { showStatus('Enter a valid phone number.', 'err'); return null; }
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ pin, phone }, extra || {})),
+    });
+    let data;
+    try { data = await res.json(); } catch { data = { error: 'network_error' }; }
+    return data;
+  }
+
+  // Lookup uses the public, PIN-free status endpoint (staff don't need to
+  // spend a PIN attempt just to look someone up).
+  async function doLookup() {
+    const phone = currentPhone();
+    if (phone.replace(/\D/g, '').length < 7) { showStatus('Enter a valid phone number.', 'err'); return; }
+    lookupBtn.disabled = true;
+    lookupBtn.textContent = 'Looking up…';
+    showStatus('', '');
+    try {
+      const res = await fetch('/api/rewards-status', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+      const data = await res.json();
+      if (!res.ok) { renderResult(data); } else { renderResult(Object.assign({ phone }, data)); }
+    } catch {
+      showStatus('Network error.', 'err');
+    } finally {
+      lookupBtn.disabled = false;
+      lookupBtn.textContent = 'Look Up';
+    }
+  }
+
+  async function addVisit() {
+    addBtn.disabled = true;
+    addBtn.textContent = 'Adding…';
+    try {
+      const data = await call('/api/rewards-log', {
+        name: nameInput.value.trim(),
+        leaderboardOptIn: optInInput.checked,
+      });
+      if (data) renderResult(data);
+    } catch {
+      showStatus('Network error.', 'err');
+    } finally {
+      addBtn.disabled = false;
+      addBtn.textContent = 'Add Visit';
+    }
+  }
+
+  async function saveOptIn() {
+    saveOptInBtn.disabled = true;
+    saveOptInBtn.textContent = 'Saving…';
+    try {
+      const data = await call('/api/rewards-optin', { leaderboardOptIn: optInInput.checked });
+      if (data) {
+        if (data.error) {
+          renderResult(data);
+        } else {
+          showStatus('Leaderboard choice saved.', 'ok');
+        }
+      }
+    } catch {
+      showStatus('Network error.', 'err');
+    } finally {
+      saveOptInBtn.disabled = false;
+      saveOptInBtn.textContent = 'Save Leaderboard Choice Only (No Visit Added)';
+    }
+  }
+
+  async function redeem() {
+    const redeemBtn = document.getElementById('redeemBtn');
+    if (redeemBtn) { redeemBtn.disabled = true; redeemBtn.textContent = 'Redeeming…'; }
+    try {
+      const data = await call('/api/rewards-redeem', {});
+      if (data) renderResult(data);
+    } catch {
+      showStatus('Network error.', 'err');
+    }
+  }
+
+  lookupBtn.addEventListener('click', doLookup);
+  addBtn.addEventListener('click', addVisit);
+  saveOptInBtn.addEventListener('click', saveOptIn);
+})();
+</script>
+</body>
+</html>

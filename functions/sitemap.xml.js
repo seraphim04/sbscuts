@@ -11,6 +11,7 @@ const PAGES = [
   '/reviews.html',
   '/contact.html',
   '/offer.html',
+  '/rewards.html',
   '/barber-website.html',
 ];
 

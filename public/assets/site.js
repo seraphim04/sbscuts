@@ -83,6 +83,7 @@
               ${social.instagram ? `<a href="${social.instagram}" target="_blank" rel="noopener">Instagram</a>` : ""}
               ${social.tiktok ? `<a href="${social.tiktok}" target="_blank" rel="noopener">TikTok</a>` : ""}
               ${social.youtube ? `<a href="${social.youtube}" target="_blank" rel="noopener">YouTube</a>` : ""}
+              ${(S.rewards && S.rewards.active) ? `<a href="/rewards.html">Rewards Program</a>` : ""}
             </div>
           </div>
           <div class="footer-bottom">
